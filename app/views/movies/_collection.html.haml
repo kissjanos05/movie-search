@@ -1,0 +1,33 @@
+.card.card-body.bg-light.collapse#search-collapse
+  .alert.alert-secondary
+    .row
+      .col-6
+        = "Total results: #{@result.total_results}"
+      .col-6.text-end
+        - if @result.hit_count > 0
+          = "Results from cache. Hit count: #{@result.hit_count}"
+        - else
+          Result from API
+
+  .py-5
+    .row.row-cols-1.row-cols-sm-2.row-cols-md-4.g-3
+      - @result.movies.each do |movie|
+        .col
+          .card.shadow-sm{ style: "width: 18rem;" }
+            %img.rounded{ src: movie.img_path, alt: movie.original_title, width: '100%', height: '429px'}
+            .card-body
+              %p.card-text.text-body
+                .card-title
+                  %h5
+                    = movie.title
+                %ul.list-group.list-group-flush
+                  %li.list-group-item
+                    Release date:
+                    = movie.release_date ? l(movie.release_date) : 'N/A'
+                  %li.list-group-item
+                    User score:
+                    = movie.vote_average
+  .py-1
+    .row
+      .col
+        = render partial: 'movies/paginate', locals:{total_results: @result.total_results, total_pages: @result.total_pages, page: @result.page}

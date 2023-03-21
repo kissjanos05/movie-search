@@ -25,3 +25,9 @@
 /config/master.key
 
 /config/mongoid.yml
+
+/config/tmdb.yml
+
+# Ignore automatically generated js-routes files.
+/app/javascript/routes.js
+/app/javascript/routes.d.ts

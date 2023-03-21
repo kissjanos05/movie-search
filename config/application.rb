@@ -30,5 +30,8 @@ module MovieSearch
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    #TheMovieDatabase API conifg
+    config.tmdb = config_for(:tmdb)
   end
 end

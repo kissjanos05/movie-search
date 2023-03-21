@@ -1,0 +1,10 @@
+.py-5.container
+  .row.py-lg-2
+    %form
+      .row
+        .col-8
+          %input.form-control.form-control-lg#search-input{ type: 'text', placeholder: 'Search for a movie'}
+        .col-4.d-grid.gap-2.mx-auto
+          %button.btn.btn-lg.btn-dark#search-submit{ type: 'submit' }
+            .spinner-border.spinner-border-sm.text-info.visually-hidden#search-spinner{role: "status"}
+            %span#search-submit-text Search

@@ -9,6 +9,12 @@ class Query
   field :total_pages, type: Integer
   field :page, type: Integer
 
+  # VALIDATIONS
+
+  validates :total_results, presence: true, numericality: { only_integer: true }
+  validates :total_pages, presence: true, numericality: { only_integer: true }
+  validates :page, presence: true, numericality: { only_integer: true }
+
   # ASSOCIATIONS
   embeds_many :movies
 

@@ -2,13 +2,11 @@
 # This class responsible to process movies list
 class MoviesClient
 
-  TMDB_API_KEY = YAML.load(File.read(Rails.root.join('config', 'tmdb.yml')))['tmdb']['api_key']
-
   attr_reader :query_string, :page
 
   def initialize query_string, page
     @query_string = query_string
-    @page = page
+    @page = page || 1
   end
 
   def search
@@ -25,15 +23,28 @@ class MoviesClient
 
   def get_and_save_from_tmdb
     params = {
-      api_key: TMDB_API_KEY,
+      api_key:  Rails.configuration.tmdb.api_key,
       page: page,
       query: query_string
     }
-    response = JSON.parse(RestClient.get('https://api.themoviedb.org/3/search/movie', params: params).body)
 
-    # Filters out the unnecessary attributes
-    movies = response['results'].map{|movie| movie.slice(*Movie.fields.keys) }
-    Query.create!(query: query_string, page: page, total_pages: response['total_pages'], total_results: response['total_results'], movies: movies)
+    RestClient.get(Rails.configuration.tmdb.search_url, params: params) do |response|
+      case response.code
+      when 200
+        _response = JSON.parse(response.body)
+        # Filters out the unnecessary attributes
+        movies = _response['results'].map{|movie| movie.slice(*Movie.fields.keys) }
+        Query.create!(query: query_string, page: page, total_pages: _response['total_pages'], total_results: _response['total_results'], movies: movies)
+      when 401
+        raise TmdbExceptions::ApiError, '401'
+      when 404
+        raise TmdbExceptions::ApiError, '404'
+      else
+        raise TmdbExceptions::ApiError, response.code
+      end
+    end
+  rescue SocketError
+    raise TmdbExceptions::ApiError, '500'
   end
 
 end

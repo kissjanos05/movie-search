@@ -1,0 +1,17 @@
+- if total_pages > 1
+  %ul.pagination.justify-content-center#movies-paginator
+    %li.page-item{class: first_disabled?(page)}
+      %a.page-link{href: pagination_url(1) } First
+  
+    %li.page-item{class: first_disabled?(page)}
+      %a.page-link{href: pagination_url(page - 1)} Previous
+  
+    - pagination_range(page, total_pages).each do |page_number|
+      %li.page-item{class: page_disabled?(page, page_number)}
+        %a.page-link{href: pagination_url(page_number)}= page_number
+  
+    %li.page-item{class: last_disabled?(page, total_pages)}
+      %a.page-link{href: pagination_url(page + 1)} Next
+  
+    %li.page-item{class: last_disabled?(page, total_pages)}
+      %a.page-link{href: pagination_url(total_pages)} Last

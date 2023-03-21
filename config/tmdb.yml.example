@@ -1,0 +1,9 @@
+shared:
+  search_url: 'https://api.themoviedb.org/3/search/movie'
+  img_url: https://image.tmdb.org/t/p/w300/
+development:
+  api_key: ''
+production:
+  api_key: ''
+test:
+  api_key: ''
