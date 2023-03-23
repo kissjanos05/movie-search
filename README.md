@@ -40,3 +40,9 @@ You can start the application now.
 
 Run:
 > rails s
+
+Or you can build a Docker image
+> sudo docker build -t image_name .
+
+and start the image
+> sudo docker run -p 3000:3000 image_name
